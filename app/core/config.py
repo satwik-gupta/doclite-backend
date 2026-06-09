@@ -7,10 +7,10 @@ exposed via a cached accessor so the same instance is injected everywhere.
 from __future__ import annotations
 
 from functools import lru_cache
-from typing import List
+from typing import Annotated, List
 
 from pydantic import field_validator
-from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic_settings import BaseSettings, NoDecode, SettingsConfigDict
 
 
 class Settings(BaseSettings):
@@ -40,12 +40,21 @@ class Settings(BaseSettings):
 
     # --- Uploads ---
     max_upload_bytes: int = 5 * 1024 * 1024  # 5 MB
-    allowed_upload_extensions: List[str] = [".txt", ".md", ".markdown", ".docx"]
+    # NoDecode: read the env var as a raw string (comma-separated) and let the
+    # validator below split it, instead of pydantic-settings JSON-decoding it.
+    allowed_upload_extensions: Annotated[List[str], NoDecode] = [
+        ".txt",
+        ".md",
+        ".markdown",
+        ".docx",
+    ]
 
     # --- CORS ---
     # Explicit allowed origins (comma-separated env). Add your Vercel production URL here
     # in addition to the regex below if you want to be strict.
-    cors_origins: List[str] = [
+    # NoDecode: parse a plain comma-separated string (e.g.
+    # "https://a.vercel.app,https://b.com") rather than requiring JSON.
+    cors_origins: Annotated[List[str], NoDecode] = [
         "http://localhost:5173",
         "http://127.0.0.1:5173",
     ]

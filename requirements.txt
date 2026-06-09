@@ -1,0 +1,32 @@
+# ---- Web / ASGI ----
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+python-multipart==0.0.20
+
+# ---- ORM / DB / validation ----
+SQLAlchemy==2.0.36
+pydantic==2.10.4
+pydantic-settings==2.7.1
+email-validator==2.2.0   # required by pydantic EmailStr
+
+# ---- Auth ----
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+bcrypt==4.0.1            # pinned: passlib 1.7.4 warns on bcrypt>=4.1
+
+# ---- Import (.docx / .md) ----
+python-docx==1.1.2
+markdown==3.7
+beautifulsoup4==4.12.3
+
+# ---- Export (Markdown / PDF) ----
+markdownify==0.14.1
+reportlab==4.2.5         # always-installable PDF engine (active default / documented fallback)
+# weasyprint==63.1       # OPTIONAL "preferred" PDF engine. Requires system libs (Pango/Cairo/GDK-PixBuf).
+#                         # If installed AND importable, PdfExporter auto-uses it; otherwise reportlab is used.
+#                         # Enable with: pip install weasyprint  (plus OS libs — see README).
+
+# ---- Tests ----
+pytest==8.3.4
+pytest-asyncio==0.25.0
+httpx==0.28.1            # required by Starlette TestClient
